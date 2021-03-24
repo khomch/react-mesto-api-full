@@ -1,0 +1,10 @@
+{
+  "name": "mesto",
+  "version": "1.0.0",
+  "description": "Project 15",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "Anton Khomchenko"
+}
