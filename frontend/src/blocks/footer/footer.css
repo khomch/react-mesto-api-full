@@ -1,0 +1,10 @@
+@import url('./__copyright/footer__copyright.css');
+
+.footer {
+  align-self: center;
+  display: flex;
+  max-width: 882px;
+  width: calc(100% - 19px*2);
+}
+
+

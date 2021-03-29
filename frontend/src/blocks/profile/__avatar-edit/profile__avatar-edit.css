@@ -1,0 +1,22 @@
+.profile__avatar-edit {
+  width: 120px;
+  height: 120px;
+  grid-area: avatar;
+  z-index: 100;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: .3s;
+}
+
+.profile__avatar-edit:hover {
+  width: 120px;
+  height: 120px;
+  background-color: rgba(0, 0, 0, 0.8);
+  grid-area: avatar;
+  z-index: 100;
+  background-image: url('../../../images/edit-avatar-button.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: .3s;
+}

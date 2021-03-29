@@ -1,0 +1,9 @@
+.card__elements {
+    display: grid;
+    grid-template-areas: 
+    "name like-button"
+    "name likes-counter";
+    flex-direction: row;
+    margin: 24px 21px 24px 21px;
+    justify-content: space-between;
+}

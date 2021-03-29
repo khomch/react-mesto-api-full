@@ -1,0 +1,18 @@
+.auth__input {
+  border: 0;
+  box-sizing: border-box;
+  border-bottom: 2px solid rgba(255, 255, 255, 1);
+  margin: 26px 36px 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  width: 358px;
+  height: 28px;
+  background-color: #000;
+}
+
+.auth__input::placeholder {
+  color: #fff
+}

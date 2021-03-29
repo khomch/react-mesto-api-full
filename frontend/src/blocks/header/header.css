@@ -1,0 +1,19 @@
+@import url(./__button/header__button.css);
+@import url(./__button/_exit/header__button_exit.css);
+@import url(./__user-menu/header__user-menu.css);
+@import url(./__user-email/header__user-email.css);
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 882px;
+  width: calc(100% - 19px*2);
+  border-bottom: 1px solid #545454;
+}
+
+@media screen and (max-width: 748px) {
+  .header {
+    width: 100%;
+  }
+}

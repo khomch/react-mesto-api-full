@@ -1,0 +1,30 @@
+@import url('./__avatar/profile__avatar.css');
+@import url('./__avatar-edit/profile__avatar-edit1.css');
+@import url('./__avatar-edit/profile__avatar-edit.css');
+
+
+.profile {
+  padding-top: 40px;
+  min-height: 120px;
+  display: grid;
+  grid-template-columns: 120px 1fr 150px;
+  grid-template-rows: 120px;
+  grid-template-areas:
+    "avatar profile-info add-button";
+  max-width: 882px;
+  width: 100%;
+}
+
+@media screen and (max-width: 748px) {
+  .profile {
+    justify-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    
+    grid-template-areas:
+      "avatar"
+      "profile-info" 
+      "profile-info__subtitle"
+      "add-button";
+  }
+}

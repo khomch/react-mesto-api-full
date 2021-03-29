@@ -1,0 +1,23 @@
+@import url('./__subtitle/profile-info__subtitle.css');
+@import url('./__title/profile-info__title.css');
+
+.profile-info {
+  padding-left: 30px;
+  align-self: center;
+  display: grid;
+  grid-template-columns: fit-content(350px) 1fr;
+  grid-template-areas:
+  "title button"
+  "subtitle .";
+
+}
+
+@media screen and (max-width: 748px) {
+  .profile-info {
+    padding-left: 0px;
+    grid-template-columns: fit-content(250px) 1fr;
+    grid-template-areas:
+    "title button"
+    "subtitle subtitle";
+  }
+}

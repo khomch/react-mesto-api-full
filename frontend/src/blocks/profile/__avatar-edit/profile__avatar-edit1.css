@@ -1,0 +1,13 @@
+.profile__avatar-edit1 {
+  width: 120px;
+  height: 120px;
+  grid-area: avatar;
+  z-index: 100;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.profile__avatar-edit1:hover {
+
+}

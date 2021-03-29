@@ -1,0 +1,26 @@
+.popup__close-icon_image {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  padding: 0;
+  align-self: flex-end;
+  position: relative;
+  top: -20px;
+  right: -30px;
+}
+
+.popup__close-icon_image:hover {
+  opacity: 0.6;
+  transition: opacity 0.3 ease-in;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 530px) {
+  .popup__close-icon_image {
+    width: 40px;
+    height: 40px;
+    align-self: center;
+    top: -20px;
+    right: 0px;
+  }
+}

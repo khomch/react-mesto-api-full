@@ -1,0 +1,13 @@
+.main {
+  display: flex;
+  max-width: 882px;
+  width: calc(100% - 19px*2);
+  flex-direction: column;
+  z-index: 1;
+}
+
+@media screen and (max-width: 319px) {
+  .main {
+    width: calc(100% - 9px*2);
+  }
+}

@@ -1,0 +1,17 @@
+.auth__title {
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #fff;
+  margin: 0;
+  padding: 60px 36px 30px;
+  text-align: center;
+}
+
+@media screen and (max-width: 530px) {
+  .auth__title {
+    padding: 17px 18px 9px;
+    font-size: 18px;
+  }
+}
