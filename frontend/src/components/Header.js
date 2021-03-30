@@ -10,8 +10,8 @@ function Header(props) {
         <div className="header__user-menu">
           {props.loggedIn ? <p className="header__user-email">{props.userData.email}</p> : "" }
           {props.loggedIn ? <button className="header__button header__button_exit" onClick={props.handleSignOut}>Выйти</button> : "" }
-          {location.pathname === "/sign-up" ? <Link className="header__button" to="/sign-in">Войти</Link> : ""}
-          {location.pathname === "/sign-in" ? <Link className="header__button" to="/sign-up">Зарегистрироваться</Link> : ""}
+          {location.pathname === "/signup" ? <Link className="header__button" to="/signin">Войти</Link> : ""}
+          {location.pathname === "/signin" ? <Link className="header__button" to="/signup">Зарегистрироваться</Link> : ""}
         </div>
         </header>
   );

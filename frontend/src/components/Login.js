@@ -1,6 +1,5 @@
 import React, { useState } from 'react'; 
 import { useHistory } from 'react-router-dom';
-import InfoTooltip from './InfoTooltip.js';
 
 
 const Login = ( props ) => {

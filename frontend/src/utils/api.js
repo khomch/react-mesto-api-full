@@ -12,8 +12,6 @@ export class Api {
 
   }
 
-
-
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       method: "GET",
@@ -40,25 +38,21 @@ export class Api {
     }).then(handleOriginalResponse);
   }
 
-  deleteCard(id) {
+  deleteCard(id, token) {
     return fetch(`${this._url}/cards/${id}`, {
       method: "DELETE",
-      credentials: 'include',   
       headers: {
-        authorization: this._token,
+        authorization: token,
       },
     }).then(handleOriginalResponse);
   }
 
 
-  changeLikeCardStatus(id, isLiked) {
-    const token = localStorage.getItem('token');
-    console.log(isLiked)
+  changeLikeCardStatus(id, isLiked, token) {
     if (isLiked) {
       console.log(isLiked)
       return fetch(`${this._url}/cards/${id}/likes/`, {
         method: "PUT",
-        credentials: 'include', 
         headers: {
           authorization: token,
         },

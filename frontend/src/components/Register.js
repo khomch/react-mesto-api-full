@@ -41,7 +41,7 @@ const Register = (props) => {
         placeholder="Пароль" required aria-label="пароль"/>
       <span className="error" id="password-error"/>
       <button className="auth__button" type="submit" aria-label="Зарегистрироваться">Зарегистрироваться</button>
-      <Link to="/sign-in" className="auth__link">Уже зарегистрированы? Войти</Link>
+      <Link to="/signin" className="auth__link">Уже зарегистрированы? Войти</Link>
     </form>
 
 

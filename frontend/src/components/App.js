@@ -70,7 +70,7 @@ function App() {
       if (data.ok) {
         console.log(data)  
         setAuthOk(true);
-        history.push("/sign-in");
+        history.push("/signin");
         setInfoTooltipPopupOpen(true);
       } else {
           setAuthOk(false);
@@ -93,7 +93,7 @@ function App() {
       else if (res) {
         setUserData(userData => ({
           ...userData,
-          email: res.data.email 
+          email: res.email 
         }));
         setLoggedIn(true);
       }
@@ -179,13 +179,14 @@ function App() {
   }, [])
 
   function handleCardLike(card) {
+
+    const token = localStorage.getItem('token');
+
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(liker => liker._id === currentUser._id);
-      console.log(isLiked)
-    
+    const isLiked = card.likes.some(liker => liker === currentUser._id);    
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
+    api.changeLikeCardStatus(card._id, !isLiked, token).then((newCard) => {
 
     // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
     const newCards = cards.map((oldCard) => {
@@ -204,9 +205,10 @@ function App() {
   } 
 
   function handleCardDelete(card) {
+    const token = localStorage.getItem('token');
 
     // Отправляем запрос в API на удаление карточки
-    api.deleteCard(card._id).then(() => {
+    api.deleteCard(card._id, token).then(() => {
   
       // Формируем новый массив на основе имеющегося, удаляя из него карточку
       const newCardsReduced = cards.filter((c) => c._id !== card._id);
@@ -243,11 +245,11 @@ function App() {
             <Switch>
               <>
                 <InfoTooltip isOpen={infoTooltipPopupOpen} isAuthOk={authOk} onClose={closeAllPopups}/>
-                <Route path="/sign-up">
+                <Route path="/signup">
                 <Register handleRegister={handleRegister}/>  
                 </Route>
 
-            <Route path="/sign-in">
+            <Route path="/signin">
                 <Login handleLogin={handleLogin}/>  
                 </Route>
 

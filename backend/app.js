@@ -19,36 +19,36 @@ const { isAuthorized } = require('./middlewares/auth.js');
 
 const app = express(); // добавляем экспресс в приложение
 
-// const options = {
-//   origin: [
-//   'http://localhost:3000',
-//   'https://vskipel.nomoredomains.icu'
-//   // 'https://your-name-of.github.io',
-//   ],
-//   credentials: true // эта опция позволяет устанавливать куки
-// };
-// app.use('*', cors(options)); // Подключаем первой миддлварой
+const options = {
+  origin: [
+  'http://localhost:3000',
+  'https://vskipel.nomoredomains.icu'
+  // 'https://your-name-of.github.io',
+  ],
+  credentials: true // эта опция позволяет устанавливать куки
+};
+app.use('*', cors(options)); // Подключаем первой миддлварой
 
 
 const PORT = 3000;
 // const PORT = 3000;
 
-// Массив разешённых доменов
-const allowedCors = [
-  'https://vskipel.nomoredomains.icu',
-  'http://vskipel.nomoredomains.icu',
-  'localhost:3000'
-];
+// // Массив разешённых доменов
+// const allowedCors = [
+//   'https://vskipel.nomoredomains.icu',
+//   'http://vskipel.nomoredomains.icu',
+//   'localhost:3000'
+// ];
 
-app.use(function(req, res, next) {
-  const { origin } = req.headers; // Записываем в переменную origin соответствующий заголовок
+// app.use(function(req, res, next) {
+//   const { origin } = req.headers; // Записываем в переменную origin соответствующий заголовок
 
-  if (allowedCors.includes(origin)) { // Проверяем, что значение origin есть среди разрешённых доменов
-    res.header('Access-Control-Allow-Origin', origin);
-  }
+//   if (allowedCors.includes(origin)) { // Проверяем, что значение origin есть среди разрешённых доменов
+//     res.header('Access-Control-Allow-Origin', origin);
+//   }
 
-  next();
-});
+//   next();
+// });
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {

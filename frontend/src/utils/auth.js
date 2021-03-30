@@ -35,13 +35,13 @@ export const authorize = (password, email) => {
 export const getContent = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
       method: 'GET',
-      credentials: 'include',   
+      // credentials: 'include',   
       headers: {
         "Content-Type": "application/json",
         "Authorization": token
       }
     })
-    .then((res) => res.ok ? console.log(res) : 'err')
+    .then((res) => res.ok ? res.json() : 'err')
     .catch((err) => console.log(err))
 }
 
