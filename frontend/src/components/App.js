@@ -16,8 +16,6 @@ import InfoTooltip from './InfoTooltip.js';
 import getProfileInfo from '../utils/api.js'
 import * as auth from '../utils/auth.js'
 
-
-
 function App() {
 
   // устанавливаем стейты для попапов

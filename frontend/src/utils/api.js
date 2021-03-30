@@ -119,7 +119,7 @@ export class Api {
 }
 
 const api = new Api({
-  url: `${window.location.protocol}${process.env.REACT_APP_API_URL || '//localhost:3001'}`,
+  url: "https://vskipel-backend.nomoredomains.icu",
   token: localStorage.getItem('token'),
 })
 
