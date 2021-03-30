@@ -19,15 +19,15 @@ const { isAuthorized } = require('./middlewares/auth.js');
 
 const app = express(); // добавляем экспресс в приложение
 
-const options = {
-  origin: [
-  'http://localhost:3000',
-  'https://vskipel.nomoredomains.icu'
-  // 'https://your-name-of.github.io',
-  ],
-  credentials: true // эта опция позволяет устанавливать куки
-};
-app.use('*', cors(options)); // Подключаем первой миддлварой
+// const options = {
+//   origin: [
+//   'http://localhost:3000',
+//   'https://vskipel.nomoredomains.icu'
+//   // 'https://your-name-of.github.io',
+//   ],
+//   credentials: true // эта опция позволяет устанавливать куки
+// };
+// app.use('*', cors(options)); // Подключаем первой миддлварой
 
 
 const PORT = 3000;
@@ -35,8 +35,8 @@ const PORT = 3000;
 
 // Массив разешённых доменов
 const allowedCors = [
-  'https://vskipel-backend.nomoredomains.icu/',
-  'http://vskipel-backend.nomoredomains.icu/',
+  'https://vskipel.nomoredomains.icu',
+  'http://vskipel.nomoredomains.icu',
   'localhost:3000'
 ];
 
