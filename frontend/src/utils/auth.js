@@ -32,17 +32,16 @@ export const authorize = (password, email) => {
     .catch((err) => console.log(err))
 };
 
-export const getContent = () => {
-  const token = localStorage.getItem('token');
+export const getContent = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
       method: 'GET',
       credentials: 'include',   
       headers: {
-        "content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        "Content-Type": "application/json",
+        "Authorization": token
       }
     })
-    .then((res) => res.ok ? res : 'err')
+    .then((res) => res.ok ? console.log(res) : 'err')
     .catch((err) => console.log(err))
 }
 
