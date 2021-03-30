@@ -1,16 +1,14 @@
-const Card = require('../models/card.js');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET_KEY } = process.env;
+const Card = require('../models/card.js');
 
+const { JWT_SECRET_KEY } = process.env;
 
 const getUserId = (req) => {
   const token = req.headers.authorization;
   const payload = jwt.verify(token, JWT_SECRET_KEY);
 
-  return payload._id
-}
-
-
+  return payload._id;
+};
 
 class NoCardError extends Error {
   constructor(name, message) {
@@ -57,8 +55,7 @@ const deleteCard = (req, res) => {
     .then((card) => {
       if (!card) {
         throw new NoCardError('cardNotFound', 'Нет карточки с таким id');
-      }
-      else if (card.owner !== getUserId(req)) {
+      } else if (card.owner !== getUserId(req)) {
         throw new NoCardError('accessDenied', 'Нет доступа');
       }
       return res.status(200).send(card);
@@ -72,8 +69,7 @@ const deleteCard = (req, res) => {
         res.status(404).send({
           message: `Ошибка — ${err.message}`,
         });
-      }
-      else if (err.name === 'accessDenied') {
+      } else if (err.name === 'accessDenied') {
         res.status(400).send({
           message: `Ошибка — ${err.message}`,
         });

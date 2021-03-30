@@ -1,5 +1,8 @@
 # Место на React
 
-Использован функциональный подход. Добавлены запросы к api, возможность добавлять и удалять карточки.
+Проект 15.
 
-Ссылка на ghpages [https://vskipel.github.io/mesto-react/](https://vskipel.github.io/mesto-react/) 
+Ссылки: 
+[https://vskipel.nomoredomains.icu/](https://vskipel.nomoredomains.icu/) 
+[https://vskipel-backend.nomoredomains.icu/](https://vskipel-backend.nomoredomains.icu/)
+[178.154.198.49](178.154.198.49)

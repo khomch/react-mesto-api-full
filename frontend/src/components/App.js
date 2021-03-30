@@ -83,7 +83,7 @@ function App() {
 
 
   const tokenCheck = useCallback(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
     auth.getContent(token)
     .then((res) => {
       console.log(res)

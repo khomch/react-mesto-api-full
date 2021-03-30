@@ -1,22 +1,11 @@
-const { NODE_ENV, JWT_SECRET_KEY } = process.env;
-const User = require('../models/user.js');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const User = require('../models/user.js');
 const {
-  generateSign
+  generateSign,
 } = require('../middlewares/auth');
 
 const MONGO_DUBLICATE_ERROR = 11000;
 const SALT_ROUNDS = 10;
-
-class NoUserError extends Error {
-  constructor(name, message) {
-    super(message);
-    this.name = name;
-  }
-}
-
-
 
 const createUser = (req, res) => {
   const {
@@ -24,36 +13,30 @@ const createUser = (req, res) => {
     about,
     avatar,
     email,
-    password
+    password,
   } = req.body;
   if (!email || !password) {
-    return res.status(400).send({
-      message: 'Не передан емейл или пароль'
+    res.status(400).send({
+      message: 'Не передан емейл или пароль',
     });
   }
-
   bcrypt
     .hash(password, SALT_ROUNDS)
-    .then(hash => {
-      return User.create({
-        name,
-        about,
-        avatar,
-        email,
-        password: hash
-      })
-    })
-    .then(() => {
-      return res.status(200).send({
-        message: 'Пользователь создан'
-      })
-    })
-    .catch(err => {
-      console.log(err);
+    .then((hash) => User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    }))
+    .then(() => res.status(200).send({
+      message: 'Пользователь создан',
+    }))
+    .catch((err) => {
       if (err.code === MONGO_DUBLICATE_ERROR) {
         res.status(409).send({
-          message: 'Такой пользователь уже существует'
-        })
+          message: 'Такой пользователь уже существует',
+        });
       }
       if (err.name === 'ValidationError') {
         res.status(400).send({
@@ -61,68 +44,64 @@ const createUser = (req, res) => {
         });
       }
       res.status(500).send({
-        message: 'Не удалось зарегистрировать пользователя'
-      })
-    })
-
+        message: 'Не удалось зарегистрировать пользователя',
+      });
+    });
 };
-
-
 
 const login = (req, res) => {
   const {
     email,
-    password
+    password,
   } = req.body;
 
   if (!email || !password) {
-    return res.status(400).send({
-      message: 'Не передан емейл или пароль'
+    res.status(400).send({
+      message: 'Не передан емейл или пароль',
     });
   }
 
   User
     .findOne({
-      email
+      email,
     }).select('+password')
-    .then(user => {
+    .then((user) => {
       if (!user) {
         return res.status(400).send({
-          message: 'Неверный имейл или пароль'
-        })
+          message: 'Неверный имейл или пароль',
+        });
       }
       return {
         user,
-        isPasswordsEqual: bcrypt.compare(password, user.password)
-      }
+        isPasswordsEqual: bcrypt.compare(password, user.password),
+      };
     })
     .then(({
       user,
-      isPasswordsEqual
+      isPasswordsEqual,
     }) => {
       if (!isPasswordsEqual) {
-        return res.status(401).send({
-          message: 'Неверный имейл или пароль'
-        })
+        res.status(401).send({
+          message: 'Неверный имейл или пароль',
+        });
       }
 
       const token = generateSign({
-        _id: user._id
-      })
+        _id: user._id,
+      });
 
       res.status(200).send({
-        token: token
-      })
+        token,
+      });
     })
-    .catch(err => {
-      console.log(err);
+    .catch((err) => {
       res.status(500).send({
-        message: 'Не удалось авторизовать пользователя'
-      })
-    })
-}
+        message: `Не удалось авторизовать пользователя — ${err}`,
+      });
+    });
+};
 
 module.exports = {
   createUser,
-  login
-}
+  login,
+};
