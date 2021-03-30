@@ -10,7 +10,6 @@ const generateSign = (payload) => {
 
 function isAuthorized(req, res, next) {
   const token = req.headers.authorization;
-  console.log(token);
 
   if (!token) {
     return res.status(401).send({ message: 'Требуется авторизация' })
@@ -18,8 +17,6 @@ function isAuthorized(req, res, next) {
 
   try {
     const payload = jwt.verify(token, JWT_SECRET_KEY);
-    console.log(JWT_SECRET_KEY)
-    console.log(payload)
     User.findOne({ _id: payload._id })
       .then(admin => {
         if (!admin) {

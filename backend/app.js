@@ -1,11 +1,7 @@
-
 require('dotenv').config({path: './process.env'});
 const cors = require('cors')
 
-
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-
 
 const express = require('express'); // импортируем экспресс
 const bodyParser = require('body-parser'); // подключаем мидлвар для парсинга JSON в body
@@ -22,6 +18,7 @@ const app = express(); // добавляем экспресс в приложе�
 const options = {
   origin: [
   'http://localhost:3000',
+  'http://vskipel.nomoredomains.icu',
   'https://vskipel.nomoredomains.icu'
   // 'https://your-name-of.github.io',
   ],
