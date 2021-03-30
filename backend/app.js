@@ -1,6 +1,6 @@
 
 require('dotenv').config({path: './process.env'});
-var cors = require('cors')
+const cors = require('cors')
 
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -30,7 +30,7 @@ const options = {
 app.use('*', cors(options)); // Подключаем первой миддлварой
 
 
-const PORT = 3001;
+const PORT = 3000;
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {
