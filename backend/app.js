@@ -2,15 +2,6 @@
 require('dotenv').config({path: './process.env'});
 var cors = require('cors')
 
-const options = {
-  origin: [
-  'http://localhost:3000',
-  'https://vskipel.nomoredomains.icu'
-  // 'https://your-name-of.github.io',
-  ],
-  credentials: true // эта опция позволяет устанавливать куки
-};
-app.use('*', cors(options)); // Подключаем первой миддлварой
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -28,7 +19,18 @@ const { isAuthorized } = require('./middlewares/auth.js');
 
 const app = express(); // добавляем экспресс в приложение
 
-const PORT = 3000;
+const options = {
+  origin: [
+  'http://localhost:3000',
+  'https://vskipel.nomoredomains.icu'
+  // 'https://your-name-of.github.io',
+  ],
+  credentials: true // эта опция позволяет устанавливать куки
+};
+app.use('*', cors(options)); // Подключаем первой миддлварой
+
+
+const PORT = 3001;
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {

@@ -13,9 +13,11 @@ export class Api {
   }
 
 
+
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       method: "GET",
+      credentials: 'include',   
       headers: {
         authorization: this._token,
       },
@@ -25,6 +27,7 @@ export class Api {
   addCard(data) {
     return fetch(`${this._url}/cards/`, {
       method: "POST",
+      credentials: 'include',   
       headers: {
         authorization: this._token,
         'Content-Type': 'application/json'
@@ -40,6 +43,7 @@ export class Api {
   deleteCard(id) {
     return fetch(`${this._url}/cards/${id}`, {
       method: "DELETE",
+      credentials: 'include',   
       headers: {
         authorization: this._token,
       },
@@ -48,18 +52,23 @@ export class Api {
 
 
   changeLikeCardStatus(id, isLiked) {
+    const token = localStorage.getItem('token');
+    console.log(isLiked)
     if (isLiked) {
-      return fetch(`${this._url}/cards/likes/${id}`, {
+      console.log(isLiked)
+      return fetch(`${this._url}/cards/${id}/likes/`, {
         method: "PUT",
+        credentials: 'include', 
         headers: {
-          authorization: this._token,
+          authorization: token,
         },
       }).then(handleOriginalResponse);
     } else {
-      return fetch(`${this._url}/cards/likes/${id}`, {
+      return fetch(`${this._url}/cards/${id}/likes/`, {
         method: "DELETE",
+        credentials: 'include',   
         headers: {
-          authorization: this._token,
+          authorization: token,
         },
       }).then(handleOriginalResponse);
     }
@@ -68,6 +77,7 @@ export class Api {
   updateAvatar(link) {
     return fetch(`${this._url}/users/me/avatar`, {
         method: "PATCH",
+        credentials: 'include',   
         headers: {
           authorization: this._token,
           'Content-Type': 'application/json'
@@ -81,10 +91,13 @@ export class Api {
 
 
   getProfileInfo() {
+    const token = localStorage.getItem('token');
+    console.log(token)
     return fetch(`${this._url}/users/me`, {
       method: "GET",
+      credentials: 'include',   
       headers: {
-        authorization: this._token,
+        authorization: token,
       },
     }).then(handleOriginalResponse);
   }
@@ -92,6 +105,7 @@ export class Api {
   setProfileInfo(data) {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
+      credentials: 'include',   
       headers: {
         authorization: this._token,
         'Content-Type': 'application/json'
@@ -105,8 +119,8 @@ export class Api {
 }
 
 const api = new Api({
-  url: "https://mesto.nomoreparties.co/v1/cohort-18",
-  token: "e9b15767-4b50-4f24-9b84-b0128a0d1268",
+  url: `${window.location.protocol}${process.env.REACT_APP_API_URL || '//localhost:3001'}`,
+  token: localStorage.getItem('token'),
 })
 
 export default api;

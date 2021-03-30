@@ -13,6 +13,7 @@ import EditProfilePopup from '../components/EditProfilePopup';
 import EditAvatarPopup from '../components/EditAvatarPopup';
 import AddPlacePopup from '../components/AddPlacePopup'
 import InfoTooltip from './InfoTooltip.js';
+import getProfileInfo from '../utils/api.js'
 import * as auth from '../utils/auth.js'
 
 
@@ -48,7 +49,9 @@ function App() {
         localStorage.setItem('token', data.token);
         setLoggedIn(true);
         history.push('/');
+        getProfileInfo(data.token);
         tokenCheck();
+
       } else {
         setAuthOk(false);
         setInfoTooltipPopupOpen(true);
@@ -85,6 +88,7 @@ function App() {
     const token = localStorage.getItem('token');
     auth.getContent(token)
     .then((res) => {
+      console.log(res)
       if (res === 'err') {
         setLoggedIn(false)
       } 
@@ -179,10 +183,11 @@ function App() {
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some(liker => liker._id === currentUser._id);
+      console.log(isLiked)
     
-    
+
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+    api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
 
     // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
     const newCards = cards.map((oldCard) => {

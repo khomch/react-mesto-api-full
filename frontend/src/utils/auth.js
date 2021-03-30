@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://vskipel-backend.nomoredomains.icu/';
+export const BASE_URL = '//localhost:3001';
 
 export const register = (password, email) => {
   return fetch(`${BASE_URL}/signup`, {
@@ -6,6 +6,7 @@ export const register = (password, email) => {
       headers: {
         "Content-Type": "application/json"
       },
+      credentials: 'include',  
       body: JSON.stringify({
         password,
         email
@@ -21,6 +22,7 @@ export const authorize = (password, email) => {
       headers: {
         "Content-Type": "application/json"
       },
+      credentials: 'include',   
       body: JSON.stringify({
         password,
         email
@@ -30,15 +32,17 @@ export const authorize = (password, email) => {
     .catch((err) => console.log(err))
 };
 
-export const getContent = (token) => {
+export const getContent = () => {
+  const token = localStorage.getItem('token');
   return fetch(`${BASE_URL}/users/me`, {
       method: 'GET',
+      credentials: 'include',   
       headers: {
-        "Content-Type": "application/json",
+        "content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       }
     })
-    .then((res) => res.ok ? res.json() : 'err')
+    .then((res) => res.ok ? res : 'err')
     .catch((err) => console.log(err))
 }
 
