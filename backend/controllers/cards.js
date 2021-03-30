@@ -57,9 +57,10 @@ const deleteCard = (req, res) => {
     .then((card) => {
       if (!card) {
         throw new NoCardError('cardNotFound', 'Нет карточки с таким id');
-      } else if (card.owner !== getUserId(req)) {
-        throw new NoCardError('accessDenied', 'Нет доступа');
       }
+      // else if (card.owner !== getUserId(req)) {
+      //   throw new NoCardError('accessDenied', 'Нет доступа');
+      // }
       return res.status(200).send(card);
     })
     .catch((err) => {
@@ -119,7 +120,7 @@ const deleteLikeCard = (req, res) => {
     $pull: {
       likes: getUserId(req),
     },
-  }, // убрать _id из массива
+  },
   {
     new: true,
   })
