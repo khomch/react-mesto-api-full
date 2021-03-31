@@ -4,13 +4,9 @@ const {
   generateSign,
 } = require('../middlewares/auth');
 
-
 const BadRequest = require('../errors/bad-request.js');
-const NotFoundError = require('../errors/not-found-err.js');
 const DuplicateError = require('../errors/duplicate-err');
 const NoTokenError = require('../errors/no-token-err');
-
-
 
 const MONGO_DUBLICATE_ERROR = 11000;
 const SALT_ROUNDS = 10;
@@ -41,14 +37,12 @@ const createUser = (req, res, next) => {
     .catch((err) => {
       if (err.code === MONGO_DUBLICATE_ERROR) {
         throw new DuplicateError('Такой пользователь уже существует');
-
       }
       if (err.name === 'ValidationError') {
         throw new BadRequest('Ошибка валидации');
       }
     })
-    .catch(next)
-
+    .catch(next);
 };
 
 const login = (req, res, next) => {
@@ -71,21 +65,21 @@ const login = (req, res, next) => {
       }
 
       return bcrypt.compare(password, user.password)
-      .then((matched) => {
-        if (!matched) {
+        .then((matched) => {
+          if (!matched) {
           // хеши не совпали — отклоняем промис
-          throw new NoTokenError('Неверный пароль или имейл');
-        }
+            throw new NoTokenError('Неверный пароль или имейл');
+          }
 
-        const token = generateSign({
-          _id: user._id,
+          const token = generateSign({
+            _id: user._id,
+          });
+          res.status(200).send({
+            token,
+          });
         });
-        res.status(200).send({
-          token,
-        });
-      })
     })
-  .catch(next)
+    .catch(next);
 };
 
 module.exports = {

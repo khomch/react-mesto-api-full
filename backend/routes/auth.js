@@ -5,13 +5,25 @@ const {
   login,
 } = require('../controllers/auth');
 
-router.post('/signin', login);
-// router.post('/signin', celebrate({
-//   body: Joi.object().keys({
-//     email: Joi.string().required().min(2).max(30),
-//     password: Joi.string().required().min(2),
-//   }),
-// }), login);
-router.post('/signup', createUser);
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
+router.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().min(2).max(30)
+      .email(),
+    password: Joi.string().required().min(2),
+  }),
+}), login);
+router.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().min(2).max(30)
+      .email(),
+    password: Joi.string().required().min(2),
+  }),
+}), createUser);
 
 module.exports = router;

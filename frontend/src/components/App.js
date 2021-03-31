@@ -34,28 +34,9 @@ function App() {
   // стейт для определения пользоателя
   const [currentUser, currentUserUpdate] = React.useState({});
 
-  // React.useEffect(() => {
-  //   api.getProfileInfo()
-  //     .then(data => {
-  //       currentUserUpdate(data);
-  //     })
-  //     .catch((err) => 'Ошибка: ' + err)
-  // }, [])
-
   // получаем инфу о карточках
   const  [cards, setCards] =  React.useState([]);
   
-  // React.useEffect(() => {
-  //   api.getInitialCards()
-  //     .then(data => {
-  //       setCards(data)})
-  //     .catch((err) => 'Ошибка: ' + err)
-      
-  // }, [])
-
-
-
-
   const proceedSignIn = React.useCallback(() => { 
     if (loggedIn === true) {
       api.getProfileInfo()
@@ -92,7 +73,6 @@ function App() {
 
   const tokenCheck = () => {
     const token = localStorage.getItem('token');
-    console.log(token)
     if (!token) {
       proceedSignOut()
     } else {
@@ -108,9 +88,7 @@ function App() {
     setLoggedIn(false);
     localStorage.removeItem('token');
     setUserData('');
-
   }
-
 
   const handleLogin = (password, email, history) => {
     auth.authorize(password, email)
@@ -149,30 +127,6 @@ function App() {
     })
     .catch(err => console.log(err))
   }  
-
-
-  // const tokenCheck = useCallback(() => {
-  //   api.getProfileInfo()
-  //   .then((res) => {
-  //     console.log(res)
-  //     if (res === 'err') {
-  //       setLoggedIn(false)
-  //     } 
-  //     else if (res) {
-  //       setUserData(userData => ({
-  //         ...userData,
-  //         email: res.email 
-  //       }));
-  //       setLoggedIn(true);
-  //     }
-    
-  //   })
-  //   .catch((err) => console.log(err))}, 
-  //   [])
-
-  // useEffect(() => {
-  //   tokenCheck();
-  // }, [])
 
   // обработчики открытия попапов
   const handleEditAvatarClick = () => {
@@ -214,7 +168,6 @@ function App() {
         closeAllPopups();
       })
       .catch((err) => 'Ошибка: ' + err);
-
   }
 
   function handleUpdateAvatar(link) {
@@ -225,8 +178,6 @@ function App() {
       })
       .catch((err) => 'Ошибка: ' + err)
   }
-
-
 
   function handleCardLike(card) {
 

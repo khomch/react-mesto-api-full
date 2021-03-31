@@ -1,21 +1,18 @@
-const { JWT_SECRET_KEY } = process.env;
-const jwt = require('jsonwebtoken');
-
 const User = require('../models/user.js');
 
 const NotFoundError = require('../errors/not-found-err.js');
 
 const getUsers = (req, res, next) => {
   User.find({})
-  .then((users) => {
-    if (!users) {
-      throw new NotFoundError('Пользователи не найдены');
-    } else {
-      return res.status(200).send(users);
-    }
-  })
-  .catch(next);
-}
+    .then((users) => {
+      if (!users) {
+        throw new NotFoundError('Пользователи не найдены');
+      } else {
+        return res.status(200).send(users);
+      }
+    })
+    .catch(next);
+};
 
 const getUserProfile = (req, res, next) => {
   User.findOne({

@@ -1,18 +1,14 @@
-const jwt = require('jsonwebtoken');
 const Card = require('../models/card.js');
-
 const BadRequest = require('../errors/bad-request.js');
 const NotFoundError = require('../errors/not-found-err.js');
 const NoPermissionError = require('../errors/no-permission-err.js');
-
 
 const getCards = (req, res, next) => (
   Card.find({})
     .then((cards) => {
       if (!cards) {
         throw new NotFoundError('Нет пользователя с таким id');
-      }
-      else {
+      } else {
         res.status(200).send(cards);
       }
     })
@@ -35,22 +31,17 @@ const createCard = (req, res, next) => {
         throw new BadRequest('Ошибка валидации');
       }
     })
-    .catch(next)
+    .catch(next);
 };
 
 const deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId, (err, card) => {
-
-  })
+  Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
-      console.log(card)
-
       if (!card) {
         throw new NotFoundError('Нет карточки с таким id');
       } else if (toString(card.owner) !== toString(req.user._id)) {
         throw new NoPermissionError('Нет доступа');
-      }
-      else return res.status(200).send(card);
+      } else return res.status(200).send(card);
     })
     .catch(next);
 };

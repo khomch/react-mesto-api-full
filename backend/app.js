@@ -1,8 +1,7 @@
 require('dotenv').config({ path: './process.env' });
 
-
+const { errors } = require('celebrate');
 const cors = require('cors');
-
 const express = require('express'); // импортируем экспресс
 const bodyParser = require('body-parser'); // подключаем мидлвар для парсинга JSON в body
 const mongoose = require('mongoose'); // подключаем mongoose
@@ -12,7 +11,7 @@ const usersRouter = require('./routes/users.js'); // пользовательс�
 const cardsRouter = require('./routes/cards.js');
 const errorRouter = require('./routes/error.js');
 const authRouter = require('./routes/auth.js');
-const { auth, isAuthorized } = require('./middlewares/auth.js');
+const { auth } = require('./middlewares/auth.js');
 
 const app = express(); // добавляем экспресс в приложение
 
@@ -47,6 +46,8 @@ app.use('/cards', auth, cardsRouter);
 app.use('/', errorRouter);
 
 app.use(errorLogger); // подключаем логгер ошибок
+
+app.use(errors()); // обработчик ошибок celebrate
 
 app.use((err, req, res) => {
   // если у ошибки нет статуса, выставляем 500

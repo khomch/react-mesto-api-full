@@ -8,8 +8,6 @@ const handleOriginalResponse = (res) => {
 export class Api {
   constructor(config) {
     this._url = config.url;
-    this._token = config.token;
-
   }
 
   getInitialCards() {
@@ -47,10 +45,8 @@ export class Api {
     }).then(handleOriginalResponse);
   }
 
-
   changeLikeCardStatus(id, isLiked, token) {
     if (isLiked) {
-      console.log(isLiked)
       return fetch(`${this._url}/cards/${id}/likes/`, {
         method: "PUT",
         headers: {
@@ -113,7 +109,6 @@ export class Api {
 
 const api = new Api({
   url: `${window.location.protocol}${process.env.REACT_APP_API_URL || '//localhost:3001'}`,
-  // url: "http://localhost:3001",
   token: localStorage.getItem('token'),
 })
 
