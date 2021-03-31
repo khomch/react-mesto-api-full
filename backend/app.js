@@ -1,4 +1,6 @@
 require('dotenv').config({ path: './process.env' });
+
+
 const cors = require('cors');
 
 const express = require('express'); // импортируем экспресс
@@ -10,7 +12,7 @@ const usersRouter = require('./routes/users.js'); // пользовательс�
 const cardsRouter = require('./routes/cards.js');
 const errorRouter = require('./routes/error.js');
 const authRouter = require('./routes/auth.js');
-const { isAuthorized } = require('./middlewares/auth.js');
+const { auth, isAuthorized } = require('./middlewares/auth.js');
 
 const app = express(); // добавляем экспресс в приложение
 
@@ -40,8 +42,8 @@ app.use(bodyParser.json());
 app.use(requestLogger); // подключаем логгер запросов
 
 app.use('/', authRouter);
-app.use('/users', isAuthorized, usersRouter);
-app.use('/cards', isAuthorized, cardsRouter);
+app.use('/users', auth, usersRouter);
+app.use('/cards', auth, cardsRouter);
 app.use('/', errorRouter);
 
 app.use(errorLogger); // подключаем логгер ошибок

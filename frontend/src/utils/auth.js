@@ -1,11 +1,11 @@
-export const BASE_URL = "https://vskipel-backend.nomoredomains.icu";
+export const BASE_URL = `${window.location.protocol}${process.env.REACT_APP_API_URL || '//localhost:3001'}`;
 // export const BASE_URL = "http://localhost:3001";
 
 export const register = (password, email) => {
   return fetch(`${BASE_URL}/signup`, {
       method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        "content-type": "application/json",
       },
       credentials: 'include',  
       body: JSON.stringify({
@@ -21,7 +21,7 @@ export const authorize = (password, email) => {
   return fetch(`${BASE_URL}/signin`, {
       method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        "content-type": "application/json",
       },
       credentials: 'include',   
       body: JSON.stringify({
@@ -33,17 +33,15 @@ export const authorize = (password, email) => {
     .catch((err) => console.log(err))
 };
 
-export const getContent = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
-      method: 'GET',
-      // credentials: 'include',   
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": token
-      }
-    })
-    .then((res) => res.ok ? res.json() : 'err')
-    .catch((err) => console.log(err))
-}
-
-// const checkResponse = (res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.statusText}`);
+// export const getContent = () => {
+//   return fetch(`${BASE_URL}/users/me`, {
+//       method: 'GET',
+//       credentials: 'include',   
+//       headers: {
+//         "content-type": "application/json",
+//         "Authorization": `Bearer ${localStorage.getItem('token')}`
+//       }
+//     })
+//     .then((res) => res.ok ? res.json() : 'err')
+//     .catch((err) => console.log(err))
+// }

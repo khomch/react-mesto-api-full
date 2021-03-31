@@ -13,7 +13,6 @@ import EditProfilePopup from '../components/EditProfilePopup';
 import EditAvatarPopup from '../components/EditAvatarPopup';
 import AddPlacePopup from '../components/AddPlacePopup'
 import InfoTooltip from './InfoTooltip.js';
-import getProfileInfo from '../utils/api.js'
 import * as auth from '../utils/auth.js'
 
 function App() {
@@ -32,6 +31,78 @@ function App() {
     email: ''
   });
 
+  // стейт для определения пользоателя
+  const [currentUser, currentUserUpdate] = React.useState({});
+
+  // React.useEffect(() => {
+  //   api.getProfileInfo()
+  //     .then(data => {
+  //       currentUserUpdate(data);
+  //     })
+  //     .catch((err) => 'Ошибка: ' + err)
+  // }, [])
+
+  // получаем инфу о карточках
+  const  [cards, setCards] =  React.useState([]);
+  
+  // React.useEffect(() => {
+  //   api.getInitialCards()
+  //     .then(data => {
+  //       setCards(data)})
+  //     .catch((err) => 'Ошибка: ' + err)
+      
+  // }, [])
+
+
+
+
+  const proceedSignIn = React.useCallback(() => { 
+    if (loggedIn === true) {
+      api.getProfileInfo()
+      .then(data => {
+        currentUserUpdate(data);
+        setUserData(userData => ({
+          ...userData,
+          email: data.email 
+        }));
+      })
+      .catch((err) => 'Ошибка: ' + err)
+      
+      api.getInitialCards()
+        .then(data => {
+          setCards(data)})
+        .catch((err) => 'Ошибка: ' + err)
+    }
+
+  }, 
+  [loggedIn]);
+    
+  const proceedSignOut = React.useCallback(() => {
+    setUserData(setLoggedIn(false)); 
+    setCards([]); }, 
+  []);
+
+  React.useEffect(() => { 
+    loggedIn 
+    ? proceedSignIn() 
+    :  proceedSignIn();
+    }, 
+  [loggedIn, proceedSignIn, proceedSignOut]);
+
+
+  const tokenCheck = () => {
+    const token = localStorage.getItem('token');
+    console.log(token)
+    if (!token) {
+      proceedSignOut()
+    } else {
+      setLoggedIn(true)
+    }
+  }
+
+  useEffect(() => {
+    tokenCheck();
+  }, [])
 
   const handleSignOut = () => {
     setLoggedIn(false);
@@ -40,22 +111,22 @@ function App() {
 
   }
 
+
   const handleLogin = (password, email, history) => {
     auth.authorize(password, email)
     .then((data) => {
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        setLoggedIn(true);
-        history.push('/');
-        getProfileInfo(data.token);
-        tokenCheck();
-
-      } else {
+      if (!data) {
         setAuthOk(false);
         setInfoTooltipPopupOpen(true);
         return
       }
-
+      if (data.token) {
+        history.push('/');
+        localStorage.setItem('token', data.token);
+        setLoggedIn(true);
+        proceedSignIn();
+        tokenCheck();
+      }
       if (data.status === 400){
         throw new Error ('Введены некорректные данные')
       }
@@ -66,9 +137,7 @@ function App() {
   const handleRegister = (password, email, history) => {
     auth.register(password, email)
     .then((data) => {
-    
       if (data.ok) {
-        console.log(data)  
         setAuthOk(true);
         history.push("/signin");
         setInfoTooltipPopupOpen(true);
@@ -82,29 +151,28 @@ function App() {
   }  
 
 
-  const tokenCheck = useCallback(() => {
-    const token = localStorage.getItem('token')
-    auth.getContent(token)
-    .then((res) => {
-      console.log(res)
-      if (res === 'err') {
-        setLoggedIn(false)
-      } 
-      else if (res) {
-        setUserData(userData => ({
-          ...userData,
-          email: res.email 
-        }));
-        setLoggedIn(true);
-      }
+  // const tokenCheck = useCallback(() => {
+  //   api.getProfileInfo()
+  //   .then((res) => {
+  //     console.log(res)
+  //     if (res === 'err') {
+  //       setLoggedIn(false)
+  //     } 
+  //     else if (res) {
+  //       setUserData(userData => ({
+  //         ...userData,
+  //         email: res.email 
+  //       }));
+  //       setLoggedIn(true);
+  //     }
     
-    })
-    .catch((err) => console.log(err))}, 
-    [])
+  //   })
+  //   .catch((err) => console.log(err))}, 
+  //   [])
 
-  useEffect(() => {
-    tokenCheck();
-  }, [tokenCheck])
+  // useEffect(() => {
+  //   tokenCheck();
+  // }, [])
 
   // обработчики открытия попапов
   const handleEditAvatarClick = () => {
@@ -138,15 +206,6 @@ function App() {
     selectedCardData(card)
   }
 
-  // стейт для определения пользоателя
-  const [currentUser, currentUserUpdate] = React.useState({});
-  React.useEffect(() => {
-    api.getProfileInfo()
-      .then(data => {
-        currentUserUpdate(data);
-      })
-      .catch((err) => 'Ошибка: ' + err)
-  }, [])
 
   function handleUpdateUser(data) {
     api.setProfileInfo(data)
@@ -167,16 +226,7 @@ function App() {
       .catch((err) => 'Ошибка: ' + err)
   }
 
-  // получаем инфу о карточках
-  const  [cards, setCards] =  React.useState([]);
-  
-  React.useEffect(() => {
-    api.getInitialCards()
-      .then(data => {
-        setCards(data)})
-      .catch((err) => 'Ошибка: ' + err)
-      
-  }, [])
+
 
   function handleCardLike(card) {
 
@@ -240,7 +290,7 @@ function App() {
 
     
         <div className="page">
-            <Header handleSignOut={handleSignOut} loggedIn={loggedIn} userData={userData}/>
+            <Header handleSignOut={handleSignOut} loggedIn={loggedIn} userData={currentUser}/>
 
             <Switch>
               <>

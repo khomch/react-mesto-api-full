@@ -2,23 +2,11 @@ const { JWT_SECRET_KEY } = process.env;
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user.js');
+
 const NotFoundError = require('../errors/not-found-err.js');
 
-const getUserId = (req) => {
-  const token = req.headers.authorization;
-  const payload = jwt.verify(token, JWT_SECRET_KEY);
-
-  return payload._id;
-};
-
-// class NoUserError extends Error {
-//   constructor(name, message) {
-//     super(message);
-//     this.name = name;
-//   }
-// }
-
-const getUsers = (req, res, next) => User.find({})
+const getUsers = (req, res, next) => {
+  User.find({})
   .then((users) => {
     if (!users) {
       throw new NotFoundError('Пользователи не найдены');
@@ -27,10 +15,11 @@ const getUsers = (req, res, next) => User.find({})
     }
   })
   .catch(next);
+}
 
 const getUserProfile = (req, res, next) => {
   User.findOne({
-    _id: getUserId(req),
+    _id: req.user._id,
   })
     .then((user) => {
       if (!user) {
@@ -47,7 +36,7 @@ const updateProfile = (req, res, next) => {
     name,
     about,
   } = req.body; // получим из объекта запроса имя, описание и аватар пользователя
-  User.findByIdAndUpdate(getUserId(req), {
+  User.findByIdAndUpdate(req.user._id, {
     name,
     about,
   }, {
@@ -67,7 +56,7 @@ const updateAvatar = (req, res, next) => {
   const {
     avatar,
   } = req.body;
-  User.findByIdAndUpdate(getUserId(req), {
+  User.findByIdAndUpdate(req.user._id, {
     avatar,
   }, {
     new: true,

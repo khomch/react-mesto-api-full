@@ -4,10 +4,18 @@ const {
   generateSign,
 } = require('../middlewares/auth');
 
+
+const BadRequest = require('../errors/bad-request.js');
+const NotFoundError = require('../errors/not-found-err.js');
+const DuplicateError = require('../errors/duplicate-err');
+const NoTokenError = require('../errors/no-token-err');
+
+
+
 const MONGO_DUBLICATE_ERROR = 11000;
 const SALT_ROUNDS = 10;
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const {
     name,
     about,
@@ -16,9 +24,7 @@ const createUser = (req, res) => {
     password,
   } = req.body;
   if (!email || !password) {
-    res.status(400).send({
-      message: 'Не передан емейл или пароль',
-    });
+    throw new NoTokenError('Не передан пароль или имейл');
   }
   bcrypt
     .hash(password, SALT_ROUNDS)
@@ -34,31 +40,25 @@ const createUser = (req, res) => {
     }))
     .catch((err) => {
       if (err.code === MONGO_DUBLICATE_ERROR) {
-        res.status(409).send({
-          message: 'Такой пользователь уже существует',
-        });
+        throw new DuplicateError('Такой пользователь уже существует');
+
       }
       if (err.name === 'ValidationError') {
-        res.status(400).send({
-          message: `Ошибка валидации данных — ${err.message}`,
-        });
+        throw new BadRequest('Ошибка валидации');
       }
-      res.status(500).send({
-        message: 'Не удалось зарегистрировать пользователя',
-      });
-    });
+    })
+    .catch(next)
+
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const {
     email,
     password,
   } = req.body;
 
   if (!email || !password) {
-    res.status(400).send({
-      message: 'Не передан емейл или пароль',
-    });
+    throw new NoTokenError('Не передан пароль или имейл');
   }
 
   User
@@ -67,38 +67,25 @@ const login = (req, res) => {
     }).select('+password')
     .then((user) => {
       if (!user) {
-        return res.status(400).send({
-          message: 'Неверный имейл или пароль',
-        });
-      }
-      return {
-        user,
-        isPasswordsEqual: bcrypt.compare(password, user.password),
-      };
-    })
-    .then(({
-      user,
-      isPasswordsEqual,
-    }) => {
-      if (!isPasswordsEqual) {
-        res.status(401).send({
-          message: 'Неверный имейл или пароль',
-        });
+        throw new BadRequest('Неверный емейл или пароль');
       }
 
-      const token = generateSign({
-        _id: user._id,
-      });
+      return bcrypt.compare(password, user.password)
+      .then((matched) => {
+        if (!matched) {
+          // хеши не совпали — отклоняем промис
+          throw new NoTokenError('Неверный пароль или имейл');
+        }
 
-      res.status(200).send({
-        token,
-      });
+        const token = generateSign({
+          _id: user._id,
+        });
+        res.status(200).send({
+          token,
+        });
+      })
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: `Не удалось авторизовать пользователя — ${err}`,
-      });
-    });
+  .catch(next)
 };
 
 module.exports = {
