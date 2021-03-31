@@ -1,6 +1,7 @@
 require('dotenv').config({ path: './process.env' });
-const cors = require('cors');
 
+const { errors } = require('celebrate');
+const cors = require('cors');
 const express = require('express'); // импортируем экспресс
 const bodyParser = require('body-parser'); // подключаем мидлвар для парсинга JSON в body
 const mongoose = require('mongoose'); // подключаем mongoose
@@ -10,7 +11,7 @@ const usersRouter = require('./routes/users.js'); // пользовательс�
 const cardsRouter = require('./routes/cards.js');
 const errorRouter = require('./routes/error.js');
 const authRouter = require('./routes/auth.js');
-const { isAuthorized } = require('./middlewares/auth.js');
+const { auth } = require('./middlewares/auth.js');
 
 const app = express(); // добавляем экспресс в приложение
 
@@ -39,12 +40,20 @@ app.use(bodyParser.json());
 
 app.use(requestLogger); // подключаем логгер запросов
 
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 app.use('/', authRouter);
-app.use('/users', isAuthorized, usersRouter);
-app.use('/cards', isAuthorized, cardsRouter);
+app.use('/users', auth, usersRouter);
+app.use('/cards', auth, cardsRouter);
 app.use('/', errorRouter);
 
 app.use(errorLogger); // подключаем логгер ошибок
+
+app.use(errors()); // обработчик ошибок celebrate
 
 app.use((err, req, res) => {
   // если у ошибки нет статуса, выставляем 500

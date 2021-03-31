@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && scp -r ./build/* vskipel@178.154.198.49:/home/vskipel/react-mesto-api-full/frontend" 
+    "deploy": "npm run build && scp -r ./build/* vskipel@178.154.198.49:/home/vskipel/react-mesto-api-full/frontend"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +41,12 @@
     ]
   },
   "devDependencies": {
-
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.1",
+    "eslint-plugin-react-hooks": "^1.7.0"
   }
 }

@@ -2,33 +2,35 @@ const jwt = require('jsonwebtoken');
 
 const { NODE_ENV, JWT_SECRET_KEY } = process.env;
 
-const User = require('../models/user');
-
 const generateSign = (payload) => jwt.sign(payload, NODE_ENV === 'production' ? JWT_SECRET_KEY : 'dev-secret', { expiresIn: '7d' });
 
-function isAuthorized(req, res, next) {
-  const token = req.headers.authorization;
+function auth(req, res, next) {
+  const { authorization } = req.headers;
 
-  if (!token) {
-    res.status(401).send({ message: 'Требуется авторизация' });
+  if (!authorization || !authorization.startsWith('Bearer ')) {
+    return res
+      .status(401)
+      .send({ message: 'Необходима авторизация' });
   }
+
+  const token = authorization.replace('Bearer ', '');
+  let payload;
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET_KEY);
-    User.findOne({ _id: payload._id })
-      .then((admin) => {
-        if (!admin) {
-          res.status(404).send({ message: 'Пользователь не существует' });
-        }
-        next();
-      })
-
-      .catch((err) => {
-        res.status(500).send({ message: `Ошибка сервера: ${err}` });
-      });
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET_KEY : 'dev-secret');
   } catch (err) {
-    res.status(403).send({ message: `Нет доступа: ${err}` });
+    return res
+      .status(401)
+      .send({ message: 'Необходима авторизация' });
   }
+
+  req.user = payload; // записываем пейлоуд в объект запроса
+
+  return next(); // пропускаем запрос дальше
 }
 
-module.exports = { generateSign, isAuthorized };
+module.exports = {
+  auth,
+  generateSign,
+  // isAuthorized
+};

@@ -8,8 +8,6 @@ const handleOriginalResponse = (res) => {
 export class Api {
   constructor(config) {
     this._url = config.url;
-    this._token = config.token;
-
   }
 
   getInitialCards() {
@@ -17,7 +15,7 @@ export class Api {
       method: "GET",
       credentials: 'include',   
       headers: {
-        authorization: this._token,
+        "Authorization": `Bearer ${localStorage.getItem('token')}`,
       },
     }).then(handleOriginalResponse);
   }
@@ -27,7 +25,7 @@ export class Api {
       method: "POST",
       credentials: 'include',   
       headers: {
-        authorization: this._token,
+        "Authorization": `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json'
       },
 
@@ -42,19 +40,17 @@ export class Api {
     return fetch(`${this._url}/cards/${id}`, {
       method: "DELETE",
       headers: {
-        authorization: token,
+        "Authorization": `Bearer ${localStorage.getItem('token')}`,
       },
     }).then(handleOriginalResponse);
   }
 
-
   changeLikeCardStatus(id, isLiked, token) {
     if (isLiked) {
-      console.log(isLiked)
       return fetch(`${this._url}/cards/${id}/likes/`, {
         method: "PUT",
         headers: {
-          authorization: token,
+          "Authorization": `Bearer ${localStorage.getItem('token')}`,
         },
       }).then(handleOriginalResponse);
     } else {
@@ -62,7 +58,7 @@ export class Api {
         method: "DELETE",
         credentials: 'include',   
         headers: {
-          authorization: token,
+          "Authorization": `Bearer ${localStorage.getItem('token')}`,
         },
       }).then(handleOriginalResponse);
     }
@@ -73,8 +69,8 @@ export class Api {
         method: "PATCH",
         credentials: 'include',   
         headers: {
-          authorization: this._token,
-          'Content-Type': 'application/json'
+          "Authorization": `Bearer ${localStorage.getItem('token')}`,
+          "content-type": "application/json",
         },
         body: JSON.stringify({
           avatar: link.avatar,
@@ -85,13 +81,12 @@ export class Api {
 
 
   getProfileInfo() {
-    const token = localStorage.getItem('token');
-    console.log(token)
     return fetch(`${this._url}/users/me`, {
       method: "GET",
       credentials: 'include',   
       headers: {
-        authorization: token,
+        "content-type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
       },
     }).then(handleOriginalResponse);
   }
@@ -101,7 +96,7 @@ export class Api {
       method: "PATCH",
       credentials: 'include',   
       headers: {
-        authorization: this._token,
+        "Authorization": `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -113,8 +108,7 @@ export class Api {
 }
 
 const api = new Api({
-  url: "https://vskipel-backend.nomoredomains.icu",
-  // url: "http://localhost:3001",
+  url: `${window.location.protocol}${process.env.REACT_APP_API_URL || '//localhost:3001'}`,
   token: localStorage.getItem('token'),
 })
 
