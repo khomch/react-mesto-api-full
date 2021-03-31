@@ -1,4 +1,4 @@
-module.exports = {
-  "extends": ["airbnb", "airbnb/hooks"],
-  // "parser": "babel-eslint"
-};
+// module.exports = {
+//   "extends": ["airbnb", "airbnb/hooks"],
+//   // "parser": "babel-eslint"
+// };
