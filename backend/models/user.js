@@ -1,5 +1,4 @@
 const mongoose = require('mongoose'); // подключаем mongoose
-const bcrypt = require('bcrypt');
 const validator = require('validator');
 
 const defaultAvatar = 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png';
@@ -24,7 +23,7 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     validate: {
-      validator: (avatar) => /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!]))?/.test(avatar),
+      validator: (avatar) => /^(ftp|http|https):\/\/[^ "]+$/.test(avatar),
       message: (props) => `${props.value} — некорректная ссылка`,
     },
     default: defaultAvatar,

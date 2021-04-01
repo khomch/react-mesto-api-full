@@ -1,6 +1,5 @@
 require('dotenv').config({ path: './process.env' });
 
-const { errors } = require('celebrate');
 const cors = require('cors');
 const express = require('express'); // импортируем экспресс
 const bodyParser = require('body-parser'); // подключаем мидлвар для парсинга JSON в body
@@ -32,14 +31,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
-})
-  .then(() => console.log('!!! Connected to DB'));
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 app.use(requestLogger); // подключаем логгер запросов
-
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -53,7 +50,15 @@ app.use('/', errorRouter);
 
 app.use(errorLogger); // подключаем логгер ошибок
 
-app.use(errors()); // обработчик ошибок celebrate
+app.use((err, req, res, next) => {
+  if (err.details !== undefined) {
+    const errorBody = err.details.get('body'); // 'details' is a Map()
+    const { details: [errorDetails] } = errorBody;
+    return res.status(401).send({
+      message: errorDetails.message,
+    });
+  } return next(err);
+});
 
 app.use((err, req, res) => {
   // если у ошибки нет статуса, выставляем 500
@@ -68,6 +73,4 @@ app.use((err, req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-});
+app.listen(PORT);

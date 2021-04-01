@@ -28,14 +28,28 @@ const getUserProfile = (req, res, next) => {
     .catch(next);
 };
 
+const getUserById = (req, res, next) => {
+  User.findOne({ _id: req.params.userId })
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Нет пользователя с таким id');
+      } else {
+        return res.status(200).send(user);
+      }
+    })
+    .catch(next);
+};
+
 const updateProfile = (req, res, next) => {
   const {
     name,
     about,
+    avatar,
   } = req.body; // получим из объекта запроса имя, описание и аватар пользователя
   User.findByIdAndUpdate(req.user._id, {
     name,
     about,
+    avatar,
   }, {
     new: true, // обработчик then получит на вход обновлённую запись
     runValidators: true, // данные будут валидированы перед изменением
@@ -73,4 +87,5 @@ module.exports = {
   updateProfile,
   getUserProfile,
   updateAvatar,
+  getUserById,
 };
