@@ -109,7 +109,7 @@ function App() {
         throw new Error ('Введены некорректные данные')
       }
     })
-    .catch(err => console.log(err)) 
+    .catch(err => 'Ошибка: ' + err) 
   }
 
   const handleRegister = (password, email, history) => {
@@ -125,7 +125,7 @@ function App() {
           return
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => 'Ошибка: ' + err)
   }  
 
   // обработчики открытия попапов

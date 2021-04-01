@@ -13,7 +13,7 @@ export const register = (password, email) => {
       })
     })
     .then((res) => res)
-    .catch((err) => console.log(err))
+    .catch((err) => 'Ошибка: ' + err)
 };
 
 export const authorize = (password, email) => {
@@ -29,5 +29,5 @@ export const authorize = (password, email) => {
       })
     })
     .then((res) => res.json())
-    .catch((err) => console.log(err))
+    .catch((err) => 'Ошибка: ' + err)
 };
