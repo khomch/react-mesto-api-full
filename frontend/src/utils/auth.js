@@ -1,5 +1,4 @@
-// export const BASE_URL = `https://vskipel-backend.nomoredomains.icu`;
-export const BASE_URL = `http://localhost:3001`;
+export const BASE_URL = `https://vskipel-backend.nomoredomains.icu`;
 
 export const register = (password, email) => {
   return fetch(`${BASE_URL}/signup`, {

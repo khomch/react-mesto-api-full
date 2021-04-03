@@ -108,8 +108,7 @@ export class Api {
 }
 
 const api = new Api({
-  // url: `https://vskipel-backend.nomoredomains.icu`,
-  url: `http://localhost:3001`,
+  url: `https://vskipel-backend.nomoredomains.icu`,
   token: localStorage.getItem('token'),
 })
 
