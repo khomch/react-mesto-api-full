@@ -30,19 +30,18 @@ const getUserProfile = (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  if (req.params.userId.length !== 24 ) {
+  if (req.params.userId.length !== 24) {
     throw new BadRequest('Невалдный id');
-  }
-    else {
+  } else {
     User.findOne({ _id: req.params.userId })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
-      } else {
-        return res.status(200).send(user);
-      }
-    })
-    .catch(next);
+      .then((user) => {
+        if (!user) {
+          throw new NotFoundError('Нет пользователя с таким id');
+        } else {
+          return res.status(200).send(user);
+        }
+      })
+      .catch(next);
   }
 };
 

@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 
-
 const {
   getUsers,
   getUserProfile,
@@ -16,7 +15,7 @@ router.get('/:userId', getUserById);
 router.patch('/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2),
-    about: Joi.string().required().min(2)
+    about: Joi.string().required().min(2),
   }),
 }), updateProfile);
 router.patch('/me/avatar', celebrate({
