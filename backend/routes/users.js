@@ -16,12 +16,11 @@ router.patch('/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2),
     about: Joi.string().required().min(2),
-    avatar: Joi.string().required().min(2),
   }),
 }), updateProfile);
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().min(2),
+    avatar: Joi.string().required().min(2).regex(/^(ftp|http|https):\/\/[^ "]+$/),
   }),
 }), updateAvatar);
 

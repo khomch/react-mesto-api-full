@@ -22,10 +22,6 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    validate: {
-      validator: (avatar) => /^(ftp|http|https):\/\/[^ "]+$/.test(avatar),
-      message: (props) => `${props.value} — некорректная ссылка`,
-    },
     default: defaultAvatar,
     required: true,
   },

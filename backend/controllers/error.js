@@ -1,3 +1,7 @@
-const getError = (req, res) => res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+const NotFoundError = require('../errors/not-found-err.js');
+
+const getError = () => {
+  throw new NotFoundError('Запрашиваемый ресурс не найден');
+};
 
 module.exports = getError;

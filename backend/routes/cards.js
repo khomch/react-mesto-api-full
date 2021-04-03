@@ -12,7 +12,7 @@ const {
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2),
-    link: Joi.string().required().min(2),
+    link: Joi.string().required().min(2).regex(/^(ftp|http|https):\/\/[^ "]+$/),
   }),
 }), createCard);
 router.get('/', getCards);
