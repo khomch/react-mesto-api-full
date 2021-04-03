@@ -48,6 +48,11 @@ app.use('/users', auth, usersRouter);
 app.use('/cards', auth, cardsRouter);
 app.use('/', errorRouter);
 
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 app.use(errorLogger); // подключаем логгер ошибок
 
 app.use((err, req, res, next) => {
