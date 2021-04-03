@@ -93,7 +93,7 @@ function App() {
   const handleLogin = (password, email, history) => {
     auth.authorize(password, email)
     .then((data) => {
-      if (!data) {
+      if (!data.token) {
         setAuthOk(false);
         setInfoTooltipPopupOpen(true);
         return

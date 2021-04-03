@@ -2,6 +2,7 @@ const Card = require('../models/card.js');
 const BadRequest = require('../errors/bad-request.js');
 const NotFoundError = require('../errors/not-found-err.js');
 const NoPermissionError = require('../errors/no-permission-err.js');
+const DuplicateError = require('../errors/duplicate-err.js');
 
 const getCards = (req, res, next) => (
   Card.find({})
@@ -35,65 +36,90 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  Card.findByIdAndDelete(req.params.cardId)
-    .then((card) => {
+  if (req.params.cardId.length !== 24 ) {
+    throw new BadRequest('Невалдный id карточки');
+  } else {
+    Card.findById(req.params.cardId)
+    .then(card => {
       if (!card) {
-        throw new NotFoundError('Нет карточки с таким id');
-      } else if (toString(card.owner) !== toString(req.user._id)) {
-        throw new NoPermissionError('Нет доступа');
-      } else return res.status(200).send(card);
+        throw new NotFoundError('Нет такой карточки');
+      }
+      if (card.owner != req.user._id) {
+        throw new DuplicateError('Нельзя удалять чужие карточки');
+      }
+      else {
+        Card.findByIdAndRemove(req.params.cardId)
+        .then((card) => {
+          if (!card) {
+            throw new NotFoundError('Нет карточки с таким id');
+          } else if (toString(card.owner) !== toString(req.user._id)) {
+            throw new NoPermissionError('Нет доступа');
+          } else return res.status(200).send(card);
+        })
+      }
     })
     .catch(next);
+  }
 };
 
 const likeCard = (req, res, next) => {
-  Card.findByIdAndUpdate(req.params.cardId, {
-    $addToSet: {
-      likes: req.user._id,
-    },
-  }, // добавить _id в массив, если его там нет
-  {
-    new: true,
-  })
-    .then((card) => {
+  if (req.params.cardId.length !== 24 ) {
+    throw new BadRequest('Невалдный id карточки');
+  } else {
+    Card.findById(req.params.cardId)
+    .then(card => {
       if (!card) {
-        throw new NotFoundError('Нет карточки с таким id');
+        throw new NotFoundError('Нет такой карточки');
       }
-      return res.status(200).send(card);
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BadRequest('Введены некорректные данные');
-      } else if (err.name === 'cardNotFound') {
-        throw new NotFoundError('Нет карточки с таким id');
+      else {
+        Card.findByIdAndUpdate(req.params.cardId, {
+          $addToSet: {
+            likes: req.user._id,
+          },
+        }, // добавить _id в массив, если его там нет
+        {
+          new: true,
+        })
+        .then((card) => {
+          if (!card) {
+          throw new NotFoundError('Нет карточки с таким id');
+          }
+          return res.status(200).send(card);
+        })
       }
     })
     .catch(next);
+  }
 };
 
 const deleteLikeCard = (req, res, next) => {
-  Card.findByIdAndUpdate(req.params.cardId, {
-    $pull: {
-      likes: req.user._id,
-    },
-  },
-  {
-    new: true,
-  })
-    .then((card) => {
+  if (req.params.cardId.length !== 24 ) {
+    throw new BadRequest('Невалдный id карточки');
+  } else {
+    Card.findById(req.params.cardId)
+    .then(card => {
       if (!card) {
-        throw new NotFoundError('Нет карточки с таким id');
+        throw new NotFoundError('Нет такой карточки');
       }
-      return res.status(200).send(card);
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BadRequest('Введены некорректные данные');
-      } else if (err.name === 'cardNotFound') {
-        throw new NotFoundError('Нет карточки с таким id');
+      else {
+        Card.findByIdAndUpdate(card._id, {
+          $pull: {
+            likes: req.user._id,
+          },
+        }, // добавить _id в массив, если его там нет
+        {
+          new: true,
+        })
+        .then((card) => {
+          if (!card) {
+          throw new NotFoundError('Нет карточки с таким id');
+          }
+          return res.status(200).send(card);
+        })
       }
     })
     .catch(next);
+  }
 };
 
 module.exports = {

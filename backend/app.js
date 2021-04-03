@@ -16,6 +16,7 @@ const app = express(); // добавляем экспресс в приложе�
 
 const options = {
   origin: [
+    // 'http://localhost:3000',
     'http://localhost:3000',
     'http://vskipel.nomoredomains.icu',
     'https://vskipel.nomoredomains.icu',
@@ -24,7 +25,7 @@ const options = {
 };
 app.use('*', cors(options)); // Подключаем первой миддлварой
 
-const PORT = 3000;
+const PORT = 3001;
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -54,7 +55,7 @@ app.use((err, req, res, next) => {
   if (err.details !== undefined) {
     const errorBody = err.details.get('body'); // 'details' is a Map()
     const { details: [errorDetails] } = errorBody;
-    return res.status(401).send({
+    return res.status(400).send({
       message: errorDetails.message,
     });
   } return next(err);

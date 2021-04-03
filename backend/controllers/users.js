@@ -1,6 +1,7 @@
 const User = require('../models/user.js');
 
 const NotFoundError = require('../errors/not-found-err.js');
+const BadRequest = require('../errors/bad-request.js');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -29,7 +30,11 @@ const getUserProfile = (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  User.findOne({ _id: req.params.userId })
+  if (req.params.userId.length !== 24 ) {
+    throw new BadRequest('Невалдный id');
+  }
+    else {
+    User.findOne({ _id: req.params.userId })
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
@@ -38,18 +43,17 @@ const getUserById = (req, res, next) => {
       }
     })
     .catch(next);
+  }
 };
 
 const updateProfile = (req, res, next) => {
   const {
     name,
     about,
-    avatar,
   } = req.body; // получим из объекта запроса имя, описание и аватар пользователя
   User.findByIdAndUpdate(req.user._id, {
     name,
     about,
-    avatar,
   }, {
     new: true, // обработчик then получит на вход обновлённую запись
     runValidators: true, // данные будут валидированы перед изменением
