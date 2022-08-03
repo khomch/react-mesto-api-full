@@ -3,9 +3,7 @@
 
 ## Технологии
 1. React
-2. Express.js
-3. MongoDB
-4. Flexbox & CSS Grid
+2. Flexbox & CSS Grid
 
 ## Версия
 1.0
