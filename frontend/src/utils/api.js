@@ -1,3 +1,5 @@
+import { BASE_URL } from "./baseUrl";
+
 const handleOriginalResponse = (res) => {
   if (!res.ok) {
     return Promise.reject(`Error: ${res.status}`);
@@ -108,7 +110,7 @@ export class Api {
 }
 
 const api = new Api({
-  url: `https://vskipel-backend.nomoredomains.icu`,
+  url: BASE_URL,
   token: localStorage.getItem('token'),
 })
 

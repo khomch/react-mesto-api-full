@@ -1,6 +1,7 @@
-export const BASE_URL = `https://vskipel-backend.nomoredomains.icu`;
+import { BASE_URL } from "./baseUrl";
 
 export const register = (password, email) => {
+  console.log(password, email)
   return fetch(`${BASE_URL}/signup`, {
       method: 'POST',
       headers: {

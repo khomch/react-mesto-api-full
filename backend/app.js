@@ -17,21 +17,19 @@ const app = express(); // добавляем экспресс в приложе�
 const options = {
   origin: [
     'http://localhost:3000',
-    'http://vskipel.nomoredomains.icu',
-    'https://vskipel.nomoredomains.icu',
   ],
   credentials: true, // эта опция позволяет устанавливать куки
 };
 app.use('*', cors(options)); // Подключаем первой миддлварой
 
-const PORT = 3000;
+const PORT = 3005;
 
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
-});
+}).then(console.log(`Connected on port ${PORT}`));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
