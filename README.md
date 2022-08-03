@@ -9,3 +9,6 @@
 
 ## Версия
 1.0
+
+## Автор
+Anton Khomchenko
