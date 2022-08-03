@@ -7,3 +7,13 @@
 [https://vskipel.nomoredomains.icu/](https://vskipel.nomoredomains.icu/) 
 [https://vskipel-backend.nomoredomains.icu/](https://vskipel-backend.nomoredomains.icu/)
 [178.154.198.49](178.154.198.49)
+
+
+# **Научиться учиться**
+
+## Технологии
+1. HTML (flexbox)
+2. CSS
+
+## Версия
+1.0
