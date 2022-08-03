@@ -1,8 +1,14 @@
-# Место на React
+# **Проект Mesto: frontend на React**
+Фронтенд проекта `Mesto`. 
 
-Проект 15.
+## Технологии
+1. React
+2. Express.js
+3. MongoDB
+4. Flexbox & CSS Grid
 
-Ссылки: 
-[https://vskipel.nomoredomains.icu/]
-[https://vskipel-backend.nomoredomains.icu/]
-[178.154.198.49]
+## Версия
+1.0
+
+### Автор
+Anton Khomchenko
