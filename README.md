@@ -2,7 +2,7 @@
 Репозиторий для проекта `Mesto`, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. 
 
 
-![Проект Mesto](https://github.com/khomch/react-mesto-api-full/blob/main/readme/mesto-index%201.jpg?raw=true)
+![Проект Mesto](https://github.com/khomch/react-mesto-api-full/blob/main/readme/mesto-index.jpg?raw=true)
 
 ## Технологии
 1. React
