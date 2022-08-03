@@ -43,7 +43,7 @@
 * Express-winston: 4.1.0
 * Joy: 0.1.1
 * Jsonwebtoken: 8.5.1
-* Mongoose: 5.11.18
+* Mongoose: 5.11.15
 * Validator: 13.5.2
 * Winston: 3.3.3
 * Eslint: 7.19.0
