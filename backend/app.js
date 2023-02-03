@@ -17,6 +17,8 @@ const app = express(); // добавляем экспресс в приложе�
 const options = {
   origin: [
     'http://localhost:3000',
+    'https://mesto.khomchenko.com',
+    'https://www.mesto.khomchenko.com',
   ],
   credentials: true, // эта опция позволяет устанавливать куки
 };
