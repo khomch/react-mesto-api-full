@@ -4,7 +4,7 @@
   "author": "Anton Khomchenko",
   "description": "SPA on sights of Russia. Powered by React.",
   "private": true,
-  "homepage": "https://khomch.github.io/react-mesto-api-full/",
+  "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
